@@ -1,0 +1,127 @@
+{
+    "acVersion": "0.8.10",
+    "acKind": "PodManifest",
+    "apps": [
+        {
+            "name": "reduce-worker",
+            "image": {
+                "name": "example.com/reduce-worker",
+                "id": "sha512-...",
+                "labels": [
+                    {
+                        "name":  "version",
+                        "value": "1.0.0"
+                    }
+                ]
+            },
+            "app": {
+                "exec": [
+                    "/bin/reduce-worker",
+                    "--debug=true",
+                    "--data-dir=/mnt/foo"
+                ],
+                "group": "0",
+                "user": "0",
+                "mountPoints": [
+                    {
+                        "name": "work",
+                        "path": "/var/lib/work"
+                    }
+                ]
+            },
+            "readOnlyRootFS": true,
+            "mounts": [
+                {
+                    "volume": "worklib",
+                    "path": "/var/lib/work"
+                }
+            ]
+        },
+        {
+            "name": "backup",
+            "image": {
+                "name": "example.com/worker-backup",
+                "id": "sha512-...",
+                "labels": [
+                    {
+                        "name": "version",
+                        "value": "1.0.0"
+                    }
+                ]
+            },
+            "app": {
+                "exec": [
+                    "/bin/reduce-backup"
+                ],
+                "group": "0",
+                "user": "0",
+                "mountPoints": [
+                    {
+                        "name": "backup",
+                        "path": "/mnt/bar"
+                    }
+                ],
+                "isolators": [
+                    {
+                        "name": "resource/memory",
+                        "value": {"limit": "1G"}
+                    }
+                ]
+            },
+            "mounts": [
+                {
+                    "volume": "worklib",
+                    "path": "/mnt/bar"
+                }
+            ],
+            "annotations": [
+                {
+                    "name": "foo",
+                    "value": "baz"
+                }
+            ]
+        },
+        {
+            "name": "register",
+            "image": {
+                "name": "example.com/reduce-worker-register",
+                "id": "sha512-...",
+                "labels": [
+                    {
+                        "name": "version",
+                        "value": "1.0.0"
+                    }
+                ]
+            }
+        }
+    ],
+    "volumes": [
+        {
+            "name": "worklib",
+            "kind": "host",
+            "source": "/opt/tenant1/work",
+            "readOnly": true,
+            "recursive": true
+        }
+    ],
+    "isolators": [
+        {
+            "name": "resource/memory",
+            "value": {
+                "limit": "4G"
+            }
+        }
+    ],
+    "annotations": [
+        {
+           "name": "ip-address",
+           "value": "10.1.2.3"
+        }
+    ],
+    "ports": [
+        {
+            "name": "ftp",
+            "hostPort": 2121
+        }
+    ]
+}

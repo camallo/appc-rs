@@ -1,0 +1,143 @@
+{
+    "acKind": "ImageManifest",
+    "acVersion": "0.8.10",
+    "name": "example.com/reduce-worker",
+    "labels": [
+        {
+            "name": "version",
+            "value": "1.0.0"
+        },
+        {
+            "name": "arch",
+            "value": "amd64"
+        },
+        {
+            "name": "os",
+            "value": "linux"
+        }
+    ],
+    "app": {
+        "exec": [
+            "/usr/bin/reduce-worker",
+            "--quiet"
+        ],
+        "user": "100",
+        "group": "300",
+        "supplementaryGids": [
+                400,
+                500
+        ],
+        "eventHandlers": [
+            {
+                "exec": [
+                    "/usr/bin/data-downloader"
+                ],
+                "name": "pre-start"
+            },
+            {
+                "exec": [
+                    "/usr/bin/deregister-worker",
+                    "--verbose"
+                ],
+                "name": "post-stop"
+            }
+        ],
+        "workingDirectory": "/opt/work",
+        "environment": [
+            {
+                "name": "REDUCE_WORKER_DEBUG",
+                "value": "true"
+            }
+        ],
+        "isolators": [
+            {
+                "name": "resource/cpu",
+                "value": {
+                    "request": "250m",
+                    "limit": "500m"
+                }
+            },
+            {
+                "name": "resource/memory",
+                "value": {
+                    "request": "1G",
+                    "limit": "2G"
+                }
+            },
+            {
+                "name": "os/linux/capabilities-retain-set",
+                "value": {
+                    "set": ["CAP_NET_BIND_SERVICE"]
+                }
+            }
+        ],
+        "mountPoints": [
+            {
+                "name": "work",
+                "path": "/var/lib/work",
+                "readOnly": false
+            }
+        ],
+        "ports": [
+            {
+                "name": "health",
+                "port": 4000,
+                "protocol": "tcp",
+                "socketActivated": true
+            },
+            {
+                "name": "ftp-data",
+                "port": 20000,
+                "count": 1000,
+                "protocol": "tcp"
+            }
+        ]
+    },
+    "dependencies": [
+        {
+            "imageName": "example.com/reduce-worker-base",
+            "imageID": "sha512-...",
+            "labels": [
+                {
+                    "name": "os",
+                    "value": "linux"
+                },
+                {
+                    "name": "env",
+                    "value": "canary"
+                }
+            ],
+            "size": 22017258
+        }
+    ],
+    "pathWhitelist": [
+        "/etc/ca/example.com/crt",
+        "/usr/bin/map-reduce-worker",
+        "/opt/libs/reduce-toolkit.so",
+        "/etc/reduce-worker.conf",
+        "/etc/systemd/system/"
+    ],
+    "annotations": [
+        {
+            "name": "authors",
+            "value": "Carly Container <carly@example.com>, Nat Network <[nat@example.com](mailto:nat@example.com)>"
+        },
+        {
+            "name": "created",
+            "value": "2014-10-27T19:32:27.67021798Z"
+        },
+        {
+            "name": "documentation",
+            "value": "https://example.com/docs"
+        },
+        {
+            "name": "homepage",
+            "value": "https://example.com"
+        },
+        {
+            "name": "appc.io/executor/supports-systemd-notify",
+            "value": false
+        }
+    ]
+}
+
