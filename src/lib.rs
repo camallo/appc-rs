@@ -8,4 +8,4 @@ extern crate serde_derive;
 mod errors;
 pub use errors::*;
 
-pub mod spec;
+pub mod schema;
