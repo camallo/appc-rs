@@ -1,19 +1,11 @@
 use serde_json;
 use std::path::PathBuf;
 
-pub type ImageID = String; // sha2::Sha512
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct KV {
-    pub name: String,
-    pub value: String,
-}
-
 #[derive(Serialize, Deserialize, Debug)]
 pub struct App {
     pub name: super::AcName,
     pub image: Image,
-    pub app: Option<AppImage>,
+    pub app: Option<super::image::AppImage>,
     #[serde(rename = "readOnlyRootFs")]
     pub readonly_rootfs: Option<bool>,
     pub mounts: Option<Vec<AppMount>>,
@@ -29,20 +21,10 @@ pub struct AppMount {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct AppImage {
-    pub exec: Option<Vec<String>>,
-    pub user: String,
-    pub group: String,
-    #[serde(rename = "workingDirectory")]
-    pub working_dir: Option<PathBuf>,
-    pub environment: Option<Vec<KV>>,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
 pub struct Image {
-    pub id: ImageID,
+    pub id: super::ImageID,
     pub name: Option<super::AcIdentifier>,
-    pub labels: Option<Vec<KV>>,
+    pub labels: Option<Vec<super::NameValue>>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
