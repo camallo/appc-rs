@@ -1,3 +1,5 @@
+//! Schema types related to AppC Pods.
+
 use serde_json;
 use std::path::PathBuf;
 

@@ -1,3 +1,5 @@
+//! Schema types related to AppC Images.
+
 use std::path::PathBuf;
 
 #[derive(Serialize, Deserialize, Debug)]
