@@ -1,6 +1,6 @@
 [package]
 name = "appc"
-version = "0.0.1-dev.1"
+version = "0.0.1-dev"
 authors = ["Luca Bruno <lucab@debian.org>"]
 license = "MIT/Apache-2.0"
 repository = "https://github.com/camallo/appc-rs"
