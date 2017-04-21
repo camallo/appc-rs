@@ -37,9 +37,9 @@ pub struct PodManifest {
     pub isolators: Option<Vec<pod::Isolator>>,
     pub annotations: Option<Vec<pod::Annotation>>,
     pub ports: Option<Vec<pod::Port>>,
-    #[serde(rename = "user_annotations")]
+    #[serde(rename = "userAnnotations")]
     pub user_annotations: Option<Vec<(String, String)>>,
-    #[serde(rename = "user_labels")]
+    #[serde(rename = "userLabels")]
     pub user_labels: Option<Vec<(String, String)>>,
 }
 
