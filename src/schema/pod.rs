@@ -30,24 +30,25 @@ pub struct Image {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct Volume {
-    pub name: super::AcName,
-    pub kind: VolumeKind,
-    pub source: Option<PathBuf>,
-    #[serde(rename = "readOnly")]
-    pub readonly: Option<bool>,
-    pub recursive: Option<bool>,
-    pub mode: Option<String>,
-    pub uid: Option<u32>,
-    pub gid: Option<u32>,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub enum VolumeKind {
+#[serde(tag="kind")]
+pub enum Volume {
     #[serde(rename="empty")]
-    Empty,
+    Empty {
+        name: super::AcName,
+        mode: Option<String>,
+        #[serde(rename="readOnly")]
+        readonly: Option<bool>,
+        uid: Option<u32>,
+        gid: Option<u32>,
+    },
     #[serde(rename="host")]
-    Host,
+    Host {
+        name: super::AcName,
+        source: PathBuf,
+        #[serde(rename="readOnly")]
+        readonly: Option<bool>,
+        recursive: Option<bool>,
+    },
 }
 
 #[derive(Serialize, Deserialize, Debug)]
