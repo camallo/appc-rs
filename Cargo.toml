@@ -21,6 +21,7 @@ exclude = [
 error-chain = { version = "0.10", default-features = false }
 libc = "0.2"
 nix = "0.8"
+parsswd = "0.1"
 semver = "0.6"
 serde = "1"
 serde_derive = "1"
