@@ -1,5 +1,3 @@
-//! Schema types defined in AppC Spec.
-
 pub mod image;
 pub mod pod;
 
