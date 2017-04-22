@@ -33,22 +33,30 @@ pub struct Image {
 #[serde(tag="kind")]
 pub enum Volume {
     #[serde(rename="empty")]
-    Empty {
-        name: super::AcName,
-        mode: Option<String>,
-        #[serde(rename="readOnly")]
-        readonly: Option<bool>,
-        uid: Option<u32>,
-        gid: Option<u32>,
-    },
+    Empty(VolumeEmpty),
     #[serde(rename="host")]
-    Host {
-        name: super::AcName,
-        source: PathBuf,
-        #[serde(rename="readOnly")]
-        readonly: Option<bool>,
-        recursive: Option<bool>,
-    },
+    Host(VolumeHost),
+}
+
+/// A volume entry of kind `empty`.
+#[derive(Serialize, Deserialize, Debug)]
+pub struct VolumeEmpty {
+    pub name: super::AcName,
+    pub mode: Option<String>,
+    #[serde(rename="readOnly")]
+    pub readonly: Option<bool>,
+    pub uid: Option<u32>,
+    pub gid: Option<u32>,
+}
+
+/// A volume entry of kind `host`.
+#[derive(Serialize, Deserialize, Debug)]
+pub struct VolumeHost {
+    pub name: super::AcName,
+    pub source: PathBuf,
+    #[serde(rename="readOnly")]
+    pub readonly: Option<bool>,
+    pub recursive: Option<bool>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
